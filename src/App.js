@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Home from "./views/Home";
 import Project1 from "./views/Project1";
+import Project2 from "./views/Project2";
 
 function App() {
   const [dirUrl,setDirUrl]=useState("home")
@@ -13,6 +14,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home setDirUrl={setDirUrl}/>} />
         <Route path="/Project1" element={<Project1 setDirUrl={setDirUrl}/>} />
+        <Route path="/Project2" element={<Project2 setDirUrl={setDirUrl}/>} />
       </Routes>
     </Router>
   );
