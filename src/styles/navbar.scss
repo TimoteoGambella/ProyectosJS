@@ -1,0 +1,49 @@
+.navbar-container{
+    background-color: black;
+    width: 100%;
+    display: flex;
+    overflow-x: scroll;
+    user-select: none;
+
+    &::-webkit-scrollbar {
+        height: 10px;
+    }
+    &::-webkit-scrollbar-thumb {
+        background: aquamarine;
+        border-radius: 8px;
+    }
+    &::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    h1{
+        color: white;
+        font-size: 32px;
+        white-space: nowrap;
+        margin: 8px 24px;
+        &:hover{
+            color: aquamarine;
+            cursor: pointer;
+            transform: scale(1.1);
+        }
+    }
+    .active{
+        color: aquamarine;
+        cursor: pointer;
+        transform: scale(1.1);
+    }
+}
+
+@media (max-width: 600px) {
+    .navbar-container{
+        h1{
+            font-size: 24px;
+        }
+    }
+}
+@media (max-width: 400px) {
+    .navbar-container{
+        h1{
+            font-size: 20px;
+        }
+    }
+}
