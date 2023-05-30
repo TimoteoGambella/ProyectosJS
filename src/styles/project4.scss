@@ -1,5 +1,5 @@
 :root {
-    --primary-color: #5fbaa7;
+    --primary-color--4: #5fbaa7;
 }
 .project4{
     background-color: #ffe7e7;
@@ -10,14 +10,14 @@
         padding-top: 30px;
         text-align: center;
         h1 {
-            color: var(--primary-color);
+            color: var(--primary-color--4);
         }
         p {
             text-align: center;
         }
         .btn {
             color: #fff;
-            background: var(--primary-color);
+            background: var(--primary-color--4);
             cursor: pointer;
             border-radius: 5px;
             font-size: 12px;
@@ -67,7 +67,7 @@
         }
         
         .rate {
-            color: var(--primary-color);
+            color: var(--primary-color--4);
             font-size: 14px;
             padding: 0 10px;
         }
