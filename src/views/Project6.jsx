@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import "../styles/project6.scss"
 
 export default function Project6(){
@@ -18,10 +18,10 @@ export default function Project6(){
           <img src="https://randomuser.me/api/portraits/men/76.jpg" alt="user" />
         </div>
         <ul>
-          <li><a href="#">Home</a></li>
-          <li><a href="#">Portfolio</a></li>
-          <li><a href="#">Blog</a></li>
-          <li><a href="#">Contact Me</a></li>
+          <li><a href="##">Home</a></li>
+          <li><a href="##">Portfolio</a></li>
+          <li><a href="##">Blog</a></li>
+          <li><a href="##">Contact Me</a></li>
         </ul>
       </nav>
       <header>
