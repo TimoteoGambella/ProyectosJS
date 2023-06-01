@@ -74,7 +74,7 @@ export default function Project7(){
   }
 
   return(
-    <div className="project7" onKeyDown={(e)=>console.log(e)}>
+    <div className="project7">
       <div className="container">
         <h1>Hangman</h1>
         <p>Find the hidden word - Enter a letter</p>
