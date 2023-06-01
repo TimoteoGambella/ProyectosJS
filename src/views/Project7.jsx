@@ -86,22 +86,24 @@ export default function Project7(){
       notification.classList.remove('show');
     }, 2000);
   }
-  
-  // // Keydown letter press
+  console.log(wrongs,corrects)
+
   window.addEventListener('keydown', e => {
-    if (play) {
+    if (play && window.location.pathname==="/project7" && activeWord!=="") {
       if (e.keyCode >= 65 && e.keyCode <= 90) {
         const letter = e.key.toLowerCase();
   
-        if (activeWord.includes(letter)) {
+        if (activeWord.indexOf(letter)!==-1) {
           if (!corrects.includes(letter)) {
-            setCorrects([...corrects, e.key])
+            // console.log("HOLA")
+            setCorrects([...corrects,e.key])
             } else {
             showNotification();
           }
         } else {
           if (!wrongs.includes(letter)) {
-            setWrongs([...wrongs, e.key])
+            // console.log("CHAU")
+            setWrongs([...wrongs,e.key])
             } else {
             showNotification();
           }
