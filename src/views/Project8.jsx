@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import "../styles/project8.scss"
 
 export default function Project8(){
