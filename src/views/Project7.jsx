@@ -5,79 +5,65 @@ export default function Project7(){
   const words = ['application', 'programming', 'interface', 'wizard', 'document', 'plane', 'lightblue', 'developer', 'software']
 
   const [play,setPlay]=useState(true)
-  const [win,setWin]=useState(false)
 
-  const [activeWord,setActiveWord]=useState("")
+  const [key,setKey]=useState("")
+
+  const [activeWord,setActiveWord]=useState(words[Math.floor(Math.random() * words.length)])
+  const [preWord,setPreWord]=useState("")
 
   const [corrects,setCorrects]=useState([])
   const [wrongs,setWrongs]=useState([])
 
   useEffect(() => {
-    if(activeWord===""){
-      setActiveWord(words[Math.floor(Math.random() * words.length)])
-    }
+    window.addEventListener('keydown', e => handleKey(e));
+    return ()=>window.removeEventListener('keydown', e => handleKey(e));    
   }, []);
 
-  // const wordEl = document.getElementById('word');
-  // const wrongLettersEl = document.getElementById('wrong-letters');
-  // const playAgainBtn = document.getElementById('play-button');
-  // const popup = document.getElementById('popup-container');
-  // const notification = document.getElementById('notification-container');
-  // const finalMessage = document.getElementById('final-message');
-  // const finalMessageRevealWord = document.getElementById('final-message-reveal-word');
-  
-  // const figureParts = document.querySelectorAll('.figure-part');
-  
+  useEffect(() => {
+    if(key!==""){
+      if (play && window.location.pathname==="/project7" && activeWord!=="") {
+        if (key.keyCode >= 65 && key.keyCode <= 90) {
+          const letter = key.key.toLowerCase();
     
-  // let playable = true;
+          if (activeWord.indexOf(letter)!==-1) {
+            if (!corrects.includes(letter)) {
+              setCorrects([...corrects,key.key])
+              } else {
+              showNotification();
+            }
+          } else {
+            if (!wrongs.includes(letter)) {
+              setWrongs([...wrongs,key.key])
+              } else {
+              showNotification();
+            }
+          }
+        }
+      }
+    }
+  }, [key]);
+
+  useEffect(() => {
+    if(wrongs.length===6){
+      setPlay(false)
+    }
+
+    if(corrects.length!==0){
+      setPreWord(document.getElementById('word').innerText.replace(/[ \n]/g, ''))
+    }
+  }, [wrongs,corrects]);
+
+  useEffect(() => {
+    if(preWord===activeWord){
+      setPlay(false)
+    }
+  }, [preWord]);
+
+  function handleKey(e) {
+    setKey(e)
+  }
   
-  // const correctLetters = [];
-  // const wrongLetters = [];
-  
-  // // Show hidden word
-  // function displayWord() {
-  
-  //   const innerWord = wordEl.innerText.replace(/[ \n]/g, '');
-    
-  //   if (innerWord === activeWord) {
-  //     finalMessage.innerText = 'Congratulations! You won! 😃';
-  //     finalMessageRevealWord.innerText = '';
-  //     popup.style.display = 'flex';
-  
-  //     playable = false;
-  //   }
-  // }
-  
-  // // Update the wrong letters
-  // function updateWrongLettersEl() {
-  //   // Display wrong letters
-  //   wrongLettersEl.innerHTML = `
-  //     ${wrongLetters.length > 0 ? '<p>Wrong</p>' : ''}
-  //     ${wrongLetters.map(letter => `<span>${letter}</span>`)}
-  //   `;
-  
-  //   // Display parts
-  //   figureParts.forEach((part, index) => {
-  //     const errors = wrongLetters.length;
-  
-  //     if (index < errors) {
-  //       part.style.display = 'block';
-  //     } else {
-  //       part.style.display = 'none';
-  //     }
-  //   });
-  
-  //   // Check if lost
-  //   if (wrongLetters.length === figureParts.length) {
-  //     finalMessage.innerText = 'Unfortunately you lost. 😕';
-  //     finalMessageRevealWord.innerText = `...the word was: ${activeWord}`;
-  //     popup.style.display = 'flex';
-  
-  //     playable = false;
-  //   }
-  // }
-  
-  // // Show notification
+  // Show notification
   function showNotification() {
     const notification = document.getElementById('notification-container')
     notification.classList.add('show');
@@ -86,55 +72,9 @@ export default function Project7(){
       notification.classList.remove('show');
     }, 2000);
   }
-  console.log(wrongs,corrects)
-
-  window.addEventListener('keydown', e => {
-    if (play && window.location.pathname==="/project7" && activeWord!=="") {
-      if (e.keyCode >= 65 && e.keyCode <= 90) {
-        const letter = e.key.toLowerCase();
-  
-        if (activeWord.indexOf(letter)!==-1) {
-          if (!corrects.includes(letter)) {
-            // console.log("HOLA")
-            setCorrects([...corrects,e.key])
-            } else {
-            showNotification();
-          }
-        } else {
-          if (!wrongs.includes(letter)) {
-            // console.log("CHAU")
-            setWrongs([...wrongs,e.key])
-            } else {
-            showNotification();
-          }
-        }
-      }
-    }
-  });
-
-  // // Restart game and play again
-  // playAgainBtn.addEventListener('click', () => {
-  //   playable = true;
-  
-  //   //  Empty arrays
-  //   correctLetters.splice(0);
-  //   wrongLetters.splice(0);
-  
-  //   // selectedWord = words[Math.floor(Math.random() * words.length)];
-  
-  //   displayWord();
-  
-  //   updateWrongLettersEl();
-  
-  //   popup.style.display = 'none';
-  // });
-  
-  // displayWord();
-
-
 
   return(
-    <div className="project7">
+    <div className="project7" onKeyDown={(e)=>console.log(e)}>
       <div className="container">
         <h1>Hangman</h1>
         <p>Find the hidden word - Enter a letter</p>
@@ -147,19 +87,26 @@ export default function Project7(){
             <line x1="20" y1="230" x2="100" y2="230" />
 
             {/* <!-- Head --> */}
-            <circle cx="140" cy="70" r="20" className="figure-part" />
+            <circle cx="140" cy="70" r="20" className="figure-part" style={{display:wrongs.length>=1&&"block"}}/>
             {/* <!-- Body --> */}
-            <line x1="140" y1="90" x2="140" y2="150" className="figure-part" />
+            <line x1="140" y1="90" x2="140" y2="150" className="figure-part" style={{display:wrongs.length>=2&&"block"}}/>
             {/* <!-- Arms --> */}
-            <line x1="140" y1="120" x2="120" y2="100" className="figure-part" />
-            <line x1="140" y1="120" x2="160" y2="100" className="figure-part" />
+            <line x1="140" y1="120" x2="120" y2="100" className="figure-part" style={{display:wrongs.length>=3&&"block"}}/>
+            <line x1="140" y1="120" x2="160" y2="100" className="figure-part" style={{display:wrongs.length>=4&&"block"}}/>
             {/* <!-- Legs --> */}
-            <line x1="140" y1="150" x2="120" y2="180" className="figure-part" />
-            <line x1="140" y1="150" x2="160" y2="180" className="figure-part" />
+            <line x1="140" y1="150" x2="120" y2="180" className="figure-part" style={{display:wrongs.length>=5&&"block"}}/>
+            <line x1="140" y1="150" x2="160" y2="180" className="figure-part" style={{display:wrongs.length>=6&&"block"}}/>
           </svg>
 
           <div className="wrong-letters-container">
-            <div id="wrong-letters"></div>
+            <div id="wrong-letters">
+              {wrongs.length!==0 && <p>Wrong</p>}
+              {wrongs.map((obj,i)=>{
+                return(
+                  <span key={i}>{i>0&&","}{obj}</span>
+                )
+              })}
+            </div>
           </div>
 
           <div className="word" id="word">
@@ -172,11 +119,22 @@ export default function Project7(){
         </div>
 
         {/* <!-- Container for final message --> */}
-        <div className="popup-container" id="popup-container">
+        <div className="popup-container" id="popup-container" style={{display:(wrongs.length===6 || preWord===activeWord)&&"flex"}}>
           <div className="popup">
-            <h2 id="final-message"></h2>
-            <h3 id="final-message-reveal-word"></h3>
-            <button id="play-button">Play Again</button>
+            <h2 id="final-message">
+              {wrongs.length===6 && "Unfortunately you lost. 😕"}
+              {preWord===activeWord && "Congratulations! You won! 😃"}
+            </h2>
+            <h3 id="final-message-reveal-word">
+              {(wrongs.length===6 || preWord===activeWord) && `...the word was: ${activeWord}`}
+            </h3>
+            <button id="play-button" onClick={()=>{
+              setActiveWord(words[Math.floor(Math.random() * words.length)])
+              setCorrects([])
+              setWrongs([])
+              setKey("")
+              setPlay(true)
+            }}>Play Again</button>
           </div>
         </div>
 
