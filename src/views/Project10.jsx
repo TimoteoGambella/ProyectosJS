@@ -37,53 +37,50 @@ export default function Project10(){
 
   const [play,setPlay]=useState(false)
 
+  const [minutes,setMinutes]=useState(0)
+  const [seconds,setSeconds]=useState(0)
+  const [minutesD,setMinutesD]=useState(0)
+  const [secondsD,setSecondsD]=useState(0)
+
   useEffect(() => {
     if(audioElement===""){
       setAudioElement(document.getElementById('audio'))
     }else{
       audioElement.pause()
       setTimeout(() => {
-        audioElement.play()
+        if(play){
+          audioElement.play()
+        }
       }, 500);
     }
     setSong(musics[select-1])
   }, [select]);
   
-
-  const currTime = document.querySelector('#currTime');
-  const durTime = document.querySelector('#durTime');
-
-  // Update progress bar
   function updateProgress(e) {
     const progress = document.getElementById('progress');
 
-    const { duration, currentTime } = e.srcElement;
+    const { duration, currentTime } = e.nativeEvent.srcElement;
     const progressPercent = (currentTime / duration) * 100;
     progress.style.width = `${progressPercent}%`;
   }
 
-  // Set progress bar
   function setProgress(e) {
-
-    const width = this.clientWidth;
-    const clickX = e.offsetX;
+    const width = e.target.clientWidth;
+    const clickX = e.nativeEvent.offsetX;
     const duration = audioElement.duration;
 
     audioElement.currentTime = (clickX / width) * duration;
   }
 
-  //get duration & currentTime for Time of song
   function DurTime (e) {
-    const {duration,currentTime} = e.srcElement;
+    const {duration,currentTime} = e.nativeEvent.srcElement;
     var sec;
     var sec_d;
 
-    // define minutes currentTime
     let min = (currentTime==null)? 0:
     Math.floor(currentTime/60);
     min = min <10 ? '0'+min:min;
 
-    // define seconds currentTime
     function get_sec (x) {
       if(Math.floor(x) >= 60){
         
@@ -101,10 +98,10 @@ export default function Project10(){
 
     get_sec (currentTime,sec);
 
-    // change currentTime DOM
-    currTime.innerHTML = min +':'+ sec;
+    setMinutes(min)
+    setSeconds(sec)
 
-    // define minutes duration
+
     let min_d = (isNaN(duration) === true)? '0':
       Math.floor(duration/60);
     min_d = min_d <10 ? '0'+min_d:min_d;
@@ -125,15 +122,13 @@ export default function Project10(){
         sec_d = sec_d <10 ? '0'+sec_d:sec_d;
       }
     } 
-
-    // define seconds duration
     
     get_sec_d (duration);
 
-    // change duration DOM
-    durTime.innerHTML = min_d +':'+ sec_d;
-      
+    setMinutesD(min_d)
+    setSecondsD(sec_d)      
   };
+
   return(
     <div className="project10">
       <h1>Music Player</h1>
@@ -143,6 +138,10 @@ export default function Project10(){
           <h4 id="title">{song.name}</h4>
           <div className="progress-container" id="progress-container" onClick={(e)=>setProgress(e)}>
             <div className="progress" id="progress"></div>
+            <div style={{display:"flex",justifyContent:"space-between"}}>
+              <p>{minutes}:{seconds}</p>
+              <p>{minutesD}:{secondsD}</p>
+            </div>
           </div>
         </div>
 
@@ -151,10 +150,14 @@ export default function Project10(){
             if(select!==3){
               setSelect(select+1)
             }else{setSelect(1)}
+            setMinutes(0)
+            setMinutesD(0)
+            setSeconds(0)
+            setSecondsD(0)
           }}
           onTimeUpdate={(e)=>{
-            // updateProgress(e)
-            // DurTime(e)
+            updateProgress(e)
+            DurTime(e)
           }}
         ></audio>
 
@@ -166,6 +169,10 @@ export default function Project10(){
             if(select!==1){
               setSelect(select-1)
             }else{setSelect(3)}
+            setMinutes(0)
+            setMinutesD(0)
+            setSeconds(0)
+            setSecondsD(0)
           }}>
             <i className="fas fa-backward"></i>
           </button>
@@ -184,6 +191,10 @@ export default function Project10(){
             if(select!==3){
               setSelect(select+1)
             }else{setSelect(1)}
+            setMinutes(0)
+            setMinutesD(0)
+            setSeconds(0)
+            setSecondsD(0)
           }}>
             <i className="fas fa-forward"></i>
           </button>
