@@ -12,22 +12,22 @@ export default function Project12(){
   const [selectWord,setSelectWord]=useState(words[Math.floor(Math.random() * words.length)])
 
   useEffect(() => {
-    document.getElementById('text').focus()
+    const timeInterval = setInterval(()=>{
+      setTime(time-1)
+    }, 1000);
+    return ()=>clearInterval(timeInterval)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
-const timeInterval = setInterval(updateTime, 1000);
-
+  
 // Update time
-function updateTime() {
-  setTime(time-1)
-
-  if (time === 0) {
-    clearInterval(timeInterval);
-    setTime(10)
-    // end game
-    // gameOver();
-  }
-}
+// function updateTime() {
+//   if (time === 0) {
+//     setInterval(false)
+//     // setTime(10)
+//     // end game
+//     // gameOver();
+//   }
+// }
 
 // // Game over, show end screen
 // function gameOver() {

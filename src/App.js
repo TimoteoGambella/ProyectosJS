@@ -23,18 +23,18 @@ function App() {
       {dirUrl==="home"&&<Navbar/>}
       <Routes>
         <Route path="/" element={<Home setDirUrl={setDirUrl}/>} />
-        <Route path="/Project1" element={<Project1 setDirUrl={setDirUrl}/>} />
-        <Route path="/Project2" element={<Project2 setDirUrl={setDirUrl}/>} />
-        <Route path="/Project3" element={<Project3 setDirUrl={setDirUrl}/>} />
-        <Route path="/Project4" element={<Project4 setDirUrl={setDirUrl}/>} />
-        <Route path="/Project5" element={<Project5 setDirUrl={setDirUrl}/>} />
-        <Route path="/Project6" element={<Project6 setDirUrl={setDirUrl}/>} />
-        <Route path="/Project7" element={<Project7 setDirUrl={setDirUrl}/>} />
-        <Route path="/Project8" element={<Project8 setDirUrl={setDirUrl}/>} />
-        <Route path="/Project9" element={<Project9 setDirUrl={setDirUrl}/>} />
-        <Route path="/Project10" element={<Project10 setDirUrl={setDirUrl}/>} />
-        <Route path="/Project11" element={<Project11 setDirUrl={setDirUrl}/>} />
-        <Route path="/Project12" element={<Project12 setDirUrl={setDirUrl}/>} />
+        <Route path="/Project1" element={<Project1/>} />
+        <Route path="/Project2" element={<Project2/>} />
+        <Route path="/Project3" element={<Project3/>} />
+        <Route path="/Project4" element={<Project4/>} />
+        <Route path="/Project5" element={<Project5/>} />
+        <Route path="/Project6" element={<Project6/>} />
+        <Route path="/Project7" element={<Project7/>} />
+        <Route path="/Project8" element={<Project8/>} />
+        <Route path="/Project9" element={<Project9/>} />
+        <Route path="/Project10" element={<Project10/>} />
+        <Route path="/Project11" element={<Project11/>} />
+        <Route path="/Project12" element={<Project12/>} />
       </Routes>
     </Router>
   );
