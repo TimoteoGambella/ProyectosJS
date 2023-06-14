@@ -2,12 +2,8 @@ import React, { useEffect, useState } from "react"
 import "../styles/project16.scss"
 
 export default function Project16(){  
-
-  const container = document.getElementById('container');
   
   const totalTime = 7500;
-  const breatheTime = (totalTime / 5) * 2;
-  const holdTime = totalTime / 5;
 
   const [text,setText]=useState("Breathe In!")
   
