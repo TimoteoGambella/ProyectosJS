@@ -13,7 +13,7 @@ export default function Navbar (){
     
     const scroll=()=>{        
         document.getElementById(window.location.pathname.slice(1)).scrollIntoView({
-            inline:"start",
+            inline:"center",
             behavior:"smooth"
         })
     }
