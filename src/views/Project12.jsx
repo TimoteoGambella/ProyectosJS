@@ -13,13 +13,17 @@ export default function Project12(){
 
   useEffect(() => {
     const timeInterval = setInterval(()=>{
-      setTime(time-1)
+      if(time!==0){
+        setTime(time=>time-1)
+      }else{
+        clearInterval(timeInterval)
+      }
     }, 1000);
     return ()=>clearInterval(timeInterval)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-  
-// Update time
+
+  // Update time
 // function updateTime() {
 //   if (time === 0) {
 //     setInterval(false)
