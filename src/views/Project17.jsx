@@ -1,105 +1,105 @@
 import React, { useEffect, useState } from "react"
 import "../styles/project17.scss"
 
+import { paddleFunction,ballFunction,brickInfoFunction } from "../components/Project17Help";
+
 export default function Project17(){  
   
-  // const rulesBtn = document.getElementById('rules-btn');
-// const closeBtn = document.getElementById('close-btn');
-// const rules = document.getElementById('rules');
-const ctx = canvas.getContext('2d');
+  const brickRowCount = 9;
+  const brickColumnCount = 5;
+  const delay = 500; //delay to reset the game
 
-const [canvas,setCanvas]=useState("")
-const [canvasContext,setCanvasContext]=useState("")
+  const [canvas,setCanvas]=useState("")
+  const [canvasContext,setCanvasContext]=useState("")
+  
+  const [ball,setBall]=useState({})
+  const [paddle,setPaddle]=useState({})
+  const [brickInfo,setBrickInfo]=useState({})
 
-const [score,setScore]=useState(0)
+  const [bricks,setBricks]=useState([])
 
-useEffect(() => {
-  if(canvas===""){
-    setCanvas(document.getElementById('canvas'))
-    setCanvasContext(document.getElementById('canvas').getContext("2d"))
+  let score=0
+
+  useEffect(() => {
+    if(canvas===""){
+      setCanvas(document.getElementById('canvas'))
+      setCanvasContext(document.getElementById('canvas').getContext("2d"))
+    }else{
+      setBall(
+        ballFunction()
+      )
+      setPaddle(
+        paddleFunction()
+      )
+      setBrickInfo(
+        brickInfoFunction()
+      )
+    }
+  }, [canvas]);
+
+  useEffect(() => {
+    if(brickInfo.visible!==undefined){
+      let newArray=[]
+      for (let i = 0; i < brickRowCount; i++) {
+        newArray[i] = [];
+        for (let j = 0; j < brickColumnCount; j++) {
+          const x = i * (brickInfo.w + brickInfo.padding) + brickInfo.offsetX;
+          const y = j * (brickInfo.h + brickInfo.padding) + brickInfo.offsetY;
+          newArray[i][j] = { x, y, ...brickInfo };
+        }
+      }
+      setBricks(newArray)
+    }
+  }, [brickInfo]);
+
+  useEffect(() => {
+    if(bricks.length!==0){
+      update();
+    }
+  }, [bricks]);
+
+  function update() {
+    movePaddle();
+    moveBall();
+
+    draw();
+
+    requestAnimationFrame(update);
   }
-}, [canvas]);
-
-const brickRowCount = 9;
-const brickColumnCount = 5;
-const delay = 500; //delay to reset the game
-
-// Create ball props
-const ball = {
-  x: canvas.width / 2,
-  y: canvas.height / 2,
-  size: 10,
-  speed: 4,
-  dx: 4,
-  dy: -4,
-  visible: true
-};
-
-// Create paddle props
-const paddle = {
-  x: canvas.width / 2 - 40,
-  y: canvas.height - 20,
-  w: 80,
-  h: 10,
-  speed: 8,
-  dx: 0,
-  visible: true
-};
-
-// Create brick props
-const brickInfo = {
-  w: 70,
-  h: 20,
-  padding: 10,
-  offsetX: 45,
-  offsetY: 60,
-  visible: true
-};
-
-// Create bricks
-const bricks = [];
-for (let i = 0; i < brickRowCount; i++) {
-  bricks[i] = [];
-  for (let j = 0; j < brickColumnCount; j++) {
-    const x = i * (brickInfo.w + brickInfo.padding) + brickInfo.offsetX;
-    const y = j * (brickInfo.h + brickInfo.padding) + brickInfo.offsetY;
-    bricks[i][j] = { x, y, ...brickInfo };
-  }
-}
 
 // Draw ball on canvas
 function drawBall() {
-  ctx.beginPath();
-  ctx.arc(ball.x, ball.y, ball.size, 0, Math.PI * 2);
-  ctx.fillStyle = ball.visible ? '#0095dd' : 'transparent';
-  ctx.fill();
-  ctx.closePath();
+  canvasContext.beginPath();
+  canvasContext.arc(ball.x, ball.y, ball.size, 0, Math.PI * 2);
+  canvasContext.fillStyle = ball.visible ? '#0095dd' : 'transparent';
+  canvasContext.fill();
+  canvasContext.closePath();
 }
 
 // Draw paddle on canvas
 function drawPaddle() {
-  ctx.beginPath();
-  ctx.rect(paddle.x, paddle.y, paddle.w, paddle.h);
-  ctx.fillStyle = paddle.visible ? '#0095dd' : 'transparent';
-  ctx.fill();
-  ctx.closePath();
+  canvasContext.beginPath();
+  canvasContext.rect(paddle.x, paddle.y, paddle.w, paddle.h);
+  canvasContext.fillStyle = paddle.visible ? '#0095dd' : 'transparent';
+  canvasContext.fill();
+  canvasContext.closePath();
 }
 
 // Draw score on canvas
 function drawScore() {
-  ctx.font = '20px Arial';
-  ctx.fillText(`Score: ${score}`, canvas.width - 100, 30);
+  canvasContext.font = '20px Arial';
+  canvasContext.fillText(`Score: ${score}`, canvas.width - 100, 30);
 }
 
 // Draw bricks on canvas
 function drawBricks() {
   bricks.forEach(column => {
     column.forEach(brick => {
-      ctx.beginPath();
-      ctx.rect(brick.x, brick.y, brick.w, brick.h);
-      ctx.fillStyle = brick.visible ? '#0095dd' : 'transparent';
-      ctx.fill();
-      ctx.closePath();
+      canvasContext.beginPath();
+      canvasContext.rect(brick.x, brick.y, brick.w, brick.h);
+      canvasContext.fillStyle = brick.visible ? '#0095dd' : 'transparent';
+      canvasContext.fill();
+      canvasContext.closePath();
     });
   });
 }
@@ -133,8 +133,6 @@ function moveBall() {
     ball.dy *= -1;
   }
 
-  // console.log(ball.x, ball.y);
-
   // Paddle collision
   if (
     ball.x - ball.size > paddle.x &&
@@ -165,16 +163,16 @@ function moveBall() {
 
   // Hit bottom wall - Lose
   if (ball.y + ball.size > canvas.height) {
+    alert("PERDISTE")
     showAllBricks();
-    score = 0;
+    score=0
   }
 }
 
 // Increase score
 function increaseScore() {
-  score++;
-
-  if (score % (brickRowCount * brickColumnCount) === 0) {
+  score=score+1
+  if (score+1 % (brickRowCount * brickColumnCount) === 0) {
 
       ball.visible = false;
       paddle.visible = false;
@@ -182,7 +180,7 @@ function increaseScore() {
       //After 0.5 sec restart the game
       setTimeout(function () {
           showAllBricks();
-          score = 0;
+          score=0
           paddle.x = canvas.width / 2 - 40;
           paddle.y = canvas.height - 20;
           ball.x = canvas.width / 2;
@@ -203,26 +201,13 @@ function showAllBricks() {
 // Draw everything
 function draw() {
   // clear canvas
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  canvasContext.clearRect(0, 0, canvas.width, canvas.height);
 
   drawBall();
   drawPaddle();
   drawScore();
   drawBricks();
 }
-
-// Update canvas drawing and animation
-function update() {
-  movePaddle();
-  moveBall();
-
-  // Draw everything
-  draw();
-
-  requestAnimationFrame(update);
-}
-
-update();
 
 // Keydown event
 function keyDown(e) {
@@ -249,14 +234,9 @@ function keyUp(e) {
 document.addEventListener('keydown', keyDown);
 document.addEventListener('keyup', keyUp);
 
-// Rules and close event handlers
-// rulesBtn.addEventListener('click', () => rules.classList.add('show'));
-// closeBtn.addEventListener('click', () => rules.classList.remove('show'));
-
   return(
     <div className="project17">
       <h1>Breakout!</h1>
-      <button id="rules-btn" className="btn rules-btn">Show Rules</button>
       <div id="rules" className="rules">
         <h2>How To Play:</h2>
         <p>
