@@ -172,22 +172,24 @@ export default function Project17(){
   // Increase score
   function increaseScore() {
     score=score+1
-    if (score+1 % (brickRowCount * brickColumnCount) === 0) {
+    if (score % (brickRowCount * brickColumnCount) === 0 || score===5) {
+      if(score===5){
+        alert("GANASTE!! \n PREMIO: Un besito :3")
+      }
+      ball.visible = false;
+      paddle.visible = false;
 
-        ball.visible = false;
-        paddle.visible = false;
-
-        //After 0.5 sec restart the game
-        setTimeout(function () {
-            showAllBricks();
-            score=0
-            paddle.x = canvas.width / 2 - 40;
-            paddle.y = canvas.height - 20;
-            ball.x = canvas.width / 2;
-            ball.y = canvas.height / 2;
-            ball.visible = true;
-            paddle.visible = true;
-        },delay)
+      //After 0.5 sec restart the game
+      setTimeout(function () {
+          showAllBricks();
+          score=0
+          paddle.x = canvas.width / 2 - 40;
+          paddle.y = canvas.height - 20;
+          ball.x = canvas.width / 2;
+          ball.y = canvas.height / 2;
+          ball.visible = true;
+          paddle.visible = true;
+      },delay)
     }
   }
 
