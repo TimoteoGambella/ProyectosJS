@@ -54,7 +54,9 @@ export default function Project17(){
 
   useEffect(() => {
     if(bricks.length!==0){
-      update();
+      if(window.location.pathname==="/project17"){
+        update();
+      }
     }
   }, [bricks]);
 
@@ -163,17 +165,22 @@ export default function Project17(){
 
     // Hit bottom wall - Lose
     if (ball.y + ball.size > canvas.height) {
-      alert("PERDISTE")
-      showAllBricks();
-      score=0
+      if(window.location.pathname==="/project17"){
+        alert("PERDISTE")
+        showAllBricks();
+        score=0
+      }else{
+        alert("VAMOS A RECARGAR LA PAGINA PARA MEJORAR SU USO")
+        window.location.reload()
+      }
     }
   }
 
   // Increase score
   function increaseScore() {
     score=score+1
-    if (score % (brickRowCount * brickColumnCount) === 0 || score===5) {
-      if(score===5){
+    if (score % (brickRowCount * brickColumnCount) === 0 || score===45) {
+      if(score===45){
         alert("GANASTE!! \n PREMIO: Un besito :3")
       }
       ball.visible = false;
@@ -239,15 +246,6 @@ export default function Project17(){
   return(
     <div className="project17">
       <h1>Breakout!</h1>
-      <div id="rules" className="rules">
-        <h2>How To Play:</h2>
-        <p>
-          Use your right and left keys to move the paddle to bounce the ball up
-          and break the blocks.
-        </p>
-        <p>If you miss the ball, your score and the blocks will reset.</p>
-        <button id="close-btn" className="btn">Close</button>
-      </div>
       <canvas id="canvas" width="800" height="600"></canvas>
     </div>
   )}
