@@ -7,13 +7,14 @@ export default function Project12(){
   const [score,setScore]=useState(0)
   const [time,setTime]=useState(10)
 
+
   const [difficulty,setDificulty]=useState("easy")
 
   const [selectWord,setSelectWord]=useState(words[Math.floor(Math.random() * words.length)])
 
   useEffect(() => {
     const timeInterval = setInterval(()=>{
-      if(time!==0){
+      if(time>0){
         setTime(time=>time-1)
       }else{
         clearInterval(timeInterval)
@@ -21,8 +22,10 @@ export default function Project12(){
     }, 1000);
     return ()=>clearInterval(timeInterval)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
+  }, [time])
+  
+// console.log(time)
+// console.log(play)
   // Update time
 // function updateTime() {
 //   if (time === 0) {
@@ -32,18 +35,6 @@ export default function Project12(){
 //     // gameOver();
 //   }
 // }
-
-// // Game over, show end screen
-// function gameOver() {
-//   endgameEl.innerHTML = `
-//     <h1>Time ran out</h1>
-//     <p>Your final score is ${score}</p>
-//     <button onclick="location.reload()">Reload</button>
-//   `;
-
-//   endgameEl.style.display = 'flex';
-// }
-
 
   return(
     <div className="project12">
@@ -89,7 +80,13 @@ export default function Project12(){
         />
         <p className="time-container">Time left: <span id="time">{time}s</span></p>
         <p className="score-container">Score: <span id="score">{score}</span></p>
-        <div id="end-game-container" className="end-game-container"></div>
+        {time <= 0 && 
+          <div id="end-game-container" className={`end-game-container ${time===0&&"flex"}`}>
+            <h1>Time ran out</h1>
+            <p>Your final score is ${score}</p>
+            <button>Reload</button>
+          </div>
+        }
       </div>
     </div>
   )
