@@ -23,18 +23,6 @@ export default function Project12(){
     return ()=>clearInterval(timeInterval)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [time])
-  
-// console.log(time)
-// console.log(play)
-  // Update time
-// function updateTime() {
-//   if (time === 0) {
-//     setInterval(false)
-//     // setTime(10)
-//     // end game
-//     // gameOver();
-//   }
-// }
 
   return(
     <div className="project12">
@@ -80,11 +68,14 @@ export default function Project12(){
         />
         <p className="time-container">Time left: <span id="time">{time}s</span></p>
         <p className="score-container">Score: <span id="score">{score}</span></p>
-        {time <= 0 && 
-          <div id="end-game-container" className={`end-game-container ${time===0&&"flex"}`}>
+        {time <=0 && 
+          <div id="end-game-container" className={`end-game-container`} style={{display:"flex"}}>
             <h1>Time ran out</h1>
-            <p>Your final score is ${score}</p>
-            <button>Reload</button>
+            <p>Your final score is {score}</p>
+            <button onClick={()=>{
+              setTime(10)
+              setScore(0)
+            }}>Reload</button>
           </div>
         }
       </div>
