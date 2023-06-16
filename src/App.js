@@ -21,6 +21,7 @@ import Project16 from "./views/Project16";
 import Project17 from "./views/Project17";
 import Project18 from "./views/Project18";
 import Project19 from "./views/Project19";
+import Project20 from "./views/Project20";
 
 function App() {
   const [dirUrl,setDirUrl]=useState("home")
@@ -49,6 +50,7 @@ function App() {
         <Route path="/Project17" element={<Project17/>} />
         <Route path="/Project18" element={<Project18/>} />
         <Route path="/Project19" element={<Project19/>} />
+        <Route path="/Project20" element={<Project20/>} />
       </Routes>
     </Router>
   );
